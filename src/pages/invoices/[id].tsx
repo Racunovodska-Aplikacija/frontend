@@ -4,6 +4,17 @@ import { authAPI, invoiceAPI, companyAPI, partnerAPI } from "@/services/api";
 import type { Invoice, Company, Partner } from "@/types";
 import Layout from "@/components/Layout";
 import InvoiceForm from "@/components/InvoiceForm";
+import { get } from "http";
+
+const getApiUrl = () => {
+  // If NEXT_PUBLIC_API_URL is set, use it
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  // Otherwise use relative path (for local development)
+  return "";
+};
 
 export default function InvoiceDetail() {
   const router = useRouter();
@@ -60,7 +71,7 @@ export default function InvoiceDetail() {
     if (!invoice) return;
     try {
       setGeneratingDownload(true);
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/invoice-pdf/pdf/${invoice.id}`, {
         credentials: "include",
       });
@@ -87,7 +98,7 @@ export default function InvoiceDetail() {
     if (!invoice) return;
     try {
       setGeneratingView(true);
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/invoice-pdf/pdf/${invoice.id}`, {
         credentials: "include",
       });
