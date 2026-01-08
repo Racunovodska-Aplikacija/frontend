@@ -17,11 +17,14 @@ export default function Login() {
     // Check if user is already logged in
     const checkAuth = async () => {
       try {
+        console.log("🔐 Checking authentication...");
         await authAPI.getCurrentUser();
         // If successful, user is logged in, redirect to home
+        console.log("✅ User already authenticated, redirecting to home");
         router.push("/");
       } catch (err) {
         // User is not logged in, stay on login page
+        console.log("ℹ️ User not authenticated, showing login page");
         setChecking(false);
       }
     };
@@ -34,11 +37,14 @@ export default function Login() {
     setLoading(true);
 
     try {
+      console.log("🚀 Attempting login with email:", formData.email);
       const response = await authAPI.login(formData);
-      console.log("Login successful:", response.message);
+      console.log("✅ Login successful:", response.message);
       router.push("/");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+      console.error("❌ Login failed:", errorMessage, err);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

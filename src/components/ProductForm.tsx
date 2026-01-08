@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { productAPI } from "@/services/api";
 import type { Product, ProductFormData } from "@/types";
 
@@ -9,7 +9,7 @@ interface ProductFormProps {
   onCancel: () => void;
 }
 
-export default function ProductForm({ product, companyId, onSuccess, onCancel }: ProductFormProps) {
+const ProductForm: React.FC<ProductFormProps> = ({ product, companyId, onSuccess, onCancel }) => {
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
     cost: 0,
@@ -67,8 +67,6 @@ export default function ProductForm({ product, companyId, onSuccess, onCancel }:
       const submitData = {
         ...formData,
         cost: typeof formData.cost === "string" ? parseFloat(formData.cost) : formData.cost,
-        ddvPercentage:
-          typeof formData.ddvPercentage === "string" ? parseFloat(formData.ddvPercentage) : formData.ddvPercentage,
         measuringUnit: showCustomUnit ? customUnit : formData.measuringUnit,
         ddvPercentage: showCustomDDV
           ? customDDV
@@ -104,7 +102,7 @@ export default function ProductForm({ product, companyId, onSuccess, onCancel }:
         setShowCustomUnit(false);
         setFormData((prev) => ({
           ...prev,
-          measuringUnit: type === "number" ? parseFloat(value) : value,
+          measuringUnit: value,
         }));
       }
     } else if (name === "ddvPercentage") {
@@ -118,7 +116,7 @@ export default function ProductForm({ product, companyId, onSuccess, onCancel }:
         setShowCustomDDV(false);
         setFormData((prev) => ({
           ...prev,
-          ddvPercentage: type === "number" ? parseFloat(value) : value,
+          ddvPercentage: parseFloat(value),
         }));
       }
     } else {
@@ -266,4 +264,6 @@ export default function ProductForm({ product, companyId, onSuccess, onCancel }:
       </div>
     </form>
   );
-}
+};
+
+export default ProductForm;

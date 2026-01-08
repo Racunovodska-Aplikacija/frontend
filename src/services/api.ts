@@ -1,7 +1,20 @@
 import axios from 'axios';
 import type { LoginRequest, RegisterRequest, AuthResponse, User, Company, CompanyFormData, Product, ProductFormData, Partner, PartnerFormData } from '@/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+// Determine API URL based on environment or current host
+const getApiUrl = () => {
+  // If NEXT_PUBLIC_API_URL is set, use it
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  // Otherwise use relative path (for local development)
+  return '';
+};
+
+const API_URL = getApiUrl();
+
+console.log('🔌 API URL configured as:', API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
@@ -9,6 +22,24 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+// Add request interceptor to log all requests
+api.interceptors.request.use((config) => {
+  console.log('📤 API Request:', config.method?.toUpperCase(), config.url ?? '', 'Full URL:', config.baseURL + (config.url ?? ''));
+  return config;
+}, (error) => {
+  console.error('❌ Request Error:', error);
+  return Promise.reject(error);
+});
+
+// Add response interceptor to log responses
+api.interceptors.response.use((response) => {
+  console.log('📥 API Response:', response.status, response.config.url);
+  return response;
+}, (error) => {
+  console.error('❌ API Error:', error.response?.status, error.response?.data || error.message);
+  return Promise.reject(error);
 });
 
 // Auth API

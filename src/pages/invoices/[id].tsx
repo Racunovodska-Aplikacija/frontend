@@ -60,9 +60,8 @@ export default function InvoiceDetail() {
     if (!invoice) return;
     try {
       setGeneratingDownload(true);
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-      const baseUrl = API_URL.replace("/api", "");
-      const response = await fetch(`${baseUrl}/invoice-pdf/pdf/${invoice.id}`, {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const response = await fetch(`${API_URL}/invoice-pdf/pdf/${invoice.id}`, {
         credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to generate PDF");
@@ -88,9 +87,8 @@ export default function InvoiceDetail() {
     if (!invoice) return;
     try {
       setGeneratingView(true);
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-      const baseUrl = API_URL.replace("/api", "");
-      const response = await fetch(`${baseUrl}/invoice-pdf/pdf/${invoice.id}`, {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const response = await fetch(`${API_URL}/invoice-pdf/pdf/${invoice.id}`, {
         credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to generate PDF");

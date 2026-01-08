@@ -70,7 +70,8 @@ export default function PartnerForm({ partner, onSuccess, onCancel }: PartnerFor
 
     setIsSearching(true);
     try {
-      const response = await fetch(`http://localhost/companies/search/cebelca?q=${encodeURIComponent(query)}`, {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const response = await fetch(`${API_URL}/companies/search/cebelca?q=${encodeURIComponent(query)}`, {
         credentials: "include",
       });
       const data = await response.json();
