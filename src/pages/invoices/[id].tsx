@@ -7,11 +7,6 @@ import InvoiceForm from "@/components/InvoiceForm";
 import { get } from "http";
 
 const getApiUrl = () => {
-  // If NEXT_PUBLIC_API_URL is set, use it
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
-  }
-
   // Otherwise use relative path (for local development)
   return "";
 };
