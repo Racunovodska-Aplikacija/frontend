@@ -24,6 +24,7 @@ export default function InvoiceDetail() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [user, setUser] = useState<any>(null);
   const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const handleSendInvoiceEmail = async () => {
     if (!invoice || !invoice.partner?.ePosta) {
       setError("Partner email not available");
@@ -31,6 +32,7 @@ export default function InvoiceDetail() {
     }
     setSendingEmail(true);
     setError("");
+    setEmailSent(false);
     try {
       const response = await fetch(
         "https://emailinvoice-ejfzbehvhwfqe0bx.swedencentral-01.azurewebsites.net/api/EmailInvoice",
@@ -44,10 +46,10 @@ export default function InvoiceDetail() {
         }
       );
       if (!response.ok) throw new Error("Failed to send invoice email");
-      // Optionally, show a success message
-      alert("Invoice email sent successfully!");
+      setEmailSent(true);
     } catch (err) {
       setError("Failed to send invoice email");
+      setEmailSent(false);
       console.error(err);
     } finally {
       setSendingEmail(false);
@@ -555,7 +557,7 @@ export default function InvoiceDetail() {
             </button>
             <button
               onClick={handleSendInvoiceEmail}
-              disabled={sendingEmail}
+              disabled={sendingEmail || emailSent}
               className="inline-flex items-center gap-2 btn-primary disabled:opacity-50"
             >
               {sendingEmail ? (
@@ -576,6 +578,13 @@ export default function InvoiceDetail() {
                     ></path>
                   </svg>
                   Sending...
+                </>
+              ) : emailSent ? (
+                <>
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Sent!
                 </>
               ) : (
                 <>
