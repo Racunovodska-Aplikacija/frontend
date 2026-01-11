@@ -371,7 +371,7 @@ export default function Home() {
                           {invoices.map((invoice) => (
                             <tr
                               key={invoice.id}
-                              onClick={() => router.push(`/invoices/${invoice.id}`)}
+                              onClick={() => router.push(`/invoice/${invoice.id}`)}
                               className="hover:bg-gray-50/80 dark:hover:bg-gray-800/50 active:bg-gray-100/80 dark:active:bg-gray-700/50 transition-all duration-200 ease-out cursor-pointer group"
                             >
                               <td className="px-4 py-5 text-sm font-medium text-[var(--foreground)] whitespace-nowrap group-hover:text-[var(--primary)] transition-colors">
