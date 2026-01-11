@@ -332,11 +332,17 @@ export default function InvoiceForm({
       for (const newProduct of newProducts) {
         if (newProduct.id.startsWith("temp-")) {
           try {
+            // Find the item that uses this product to get the actual cost
+            const itemUsingProduct = formData.items.find((item) => item.productId === newProduct.id);
+            const actualCost = itemUsingProduct?.unitPrice || newProduct.cost;
+            const actualUnit = itemUsingProduct?.unit || newProduct.measuringUnit;
+            const actualVAT = itemUsingProduct?.vatRate || newProduct.ddvPercentage;
+
             const savedProduct = await productAPI.create(formData.companyId, {
               name: newProduct.name,
-              cost: newProduct.cost,
-              measuringUnit: newProduct.measuringUnit,
-              ddvPercentage: newProduct.ddvPercentage,
+              cost: actualCost,
+              measuringUnit: actualUnit,
+              ddvPercentage: actualVAT,
             });
             savedProductMap.set(newProduct.id, savedProduct.id);
           } catch (err) {
