@@ -1,6 +1,5 @@
 import { useState, FormEvent, useEffect, useRef } from "react";
-import { partnerAPI } from "@/services/api";
-import { getApiUrl } from "@/utils/apiUrl";
+import api, { partnerAPI } from "@/services/api";
 import type { Partner, PartnerFormData } from "@/types";
 
 interface PartnerFormProps {
@@ -71,11 +70,10 @@ export default function PartnerForm({ partner, onSuccess, onCancel }: PartnerFor
 
     setIsSearching(true);
     try {
-      const API_URL = getApiUrl();
-      const response = await fetch(`${API_URL}/companies/search/cebelca?q=${encodeURIComponent(query)}`, {
-        credentials: "include",
+      const response = await api.get("/companies/search/cebelca", {
+        params: { q: query },
       });
-      const data = await response.json();
+      const data = response.data;
       setSuggestions(Array.isArray(data) ? data : []);
       setShowSuggestions(true);
     } catch (error) {
