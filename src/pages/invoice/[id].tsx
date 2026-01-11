@@ -22,8 +22,8 @@ export default function InvoiceDetail() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const handleSendInvoiceEmail = async () => {
-    if (!invoice || !invoice.partner?.ePosta) {
-      setError("Partner email not available");
+    if (!invoice || !invoice.partner?.ePosta || !user?.email) {
+      setError("Partner email or user email not available");
       return;
     }
     setSendingEmail(true);
@@ -36,7 +36,8 @@ export default function InvoiceDetail() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: invoice.partner.ePosta,
+            senderEmail: user.email,
+            recipientEmail: invoice.partner.ePosta,
             invoiceId: invoice.id,
           }),
         }
