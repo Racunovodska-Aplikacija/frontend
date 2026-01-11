@@ -1,5 +1,6 @@
 import { useState, FormEvent, useEffect, useRef } from "react";
 import { partnerAPI } from "@/services/api";
+import { getApiUrl } from "@/utils/apiUrl";
 import type { Partner, PartnerFormData } from "@/types";
 
 interface PartnerFormProps {
@@ -70,7 +71,7 @@ export default function PartnerForm({ partner, onSuccess, onCancel }: PartnerFor
 
     setIsSearching(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/companies/search/cebelca?q=${encodeURIComponent(query)}`, {
         credentials: "include",
       });

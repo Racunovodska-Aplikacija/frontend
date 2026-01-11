@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { authAPI, invoiceAPI, companyAPI, partnerAPI } from "@/services/api";
+import { getApiUrl } from "@/utils/apiUrl";
 import type { Invoice, Company, Partner } from "@/types";
 import Layout from "@/components/Layout";
 import InvoiceForm from "@/components/InvoiceForm";
 import { get } from "http";
-
-const getApiUrl = () => {
-  // Otherwise use relative path (for local development)
-  return "";
-};
 
 export default function InvoiceDetail() {
   const router = useRouter();
